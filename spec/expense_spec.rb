@@ -55,4 +55,32 @@ describe Expense do
       Expense.total.should eq 501.84
     end
   end
+
+  describe '.total_by_time_period' do
+    it 'returns the sum of expenses within a certain time period' do
+      expense1 = Expense.new({'description' => 'Llama Saddle', 'amount' => 45.00, 'date' => "02-02-2004", 'company_id' => 1})
+      expense1.save
+      expense2 = Expense.new({'description' => 'Llama food', 'amount' => 456.84, 'date' => "02-03-2005", 'company_id' => 2})
+      expense2.save
+      category1 = Category.new({'type' => 'I dont love this set up'})
+      category1.save
+      category1.add_combo(expense1.id)
+      category1.add_combo(expense2.id)
+      Expense.total_by_time_period('01-01-2004', '12-31-2004').should eq 45.00
+    end
+  end
+
+  describe '.total_by_category' do
+    it 'returns an array of category names and the sum of related expenses' do
+      expense1 = Expense.new({'description' => 'Llama Saddle', 'amount' => 45.00, 'date' => "02-02-2004", 'company_id' => 1})
+      expense1.save
+      expense2 = Expense.new({'description' => 'Llama food', 'amount' => 456.84, 'date' => "02-03-2005", 'company_id' => 2})
+      expense2.save
+      category1 = Category.new({'type' => 'I dont love this set up'})
+      category1.save
+      category1.add_combo(expense1.id)
+      category1.add_combo(expense2.id)
+      Expense.total_by_category('01-01-2004', '12-31-2005').should eq ["I dont love this set up: $501.84"]
+    end
+  end
 end

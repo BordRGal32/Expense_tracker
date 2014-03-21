@@ -21,7 +21,7 @@ class Expense
   end
 
   def save
-    result = DB.exec("INSERT INTO expenses (description, amount, date, company_id) VALUES ('#{@description}', #{@amount}, '#{@date}', '#{@company_id}') RETURNING id;")
+    result = DB.exec("INSERT INTO expenses (description, amount, date, company_id) VALUES ('#{@description}', #{@amount}, '#{@date}', #{@company_id}) RETURNING id;")
     @id = result.first['id'].to_i
   end
 
@@ -58,5 +58,19 @@ class Expense
   def self.total
     sum = DB.exec("SELECT sum(amount) FROM expenses;")
     sum.first['sum'].to_f
+  end
+
+  def self.total_by_time_period(start_date, end_date)
+    results = DB.exec("SELECT sum(expenses.amount) FROM expenses JOIN expense_categories ON (expenses.id = expense_categories.expense_id) WHERE expenses.date >= '#{start_date}' AND expenses.date <= '#{end_date}';")
+    results.first['sum'].to_f
+  end
+
+  def self.total_by_category(start_date, end_date)
+    categories_totals = []
+    Category.all.each do |category|
+      results = DB.exec("SELECT sum(expenses.amount) FROM expenses INNER JOIN expense_categories ON (expenses.id = expense_categories.expense_id) WHERE expenses.date >= '#{start_date}' AND expenses.date <= '#{end_date}' AND expense_categories.category_id = #{category.id};")
+      categories_totals << "#{category.type}: $#{results.first['sum'].to_f}"
+    end
+    categories_totals
   end
 end

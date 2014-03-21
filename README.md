@@ -13,7 +13,7 @@
 
 [+] As a user, I want to see what percentage of each category I spend on each company, so that I can try to figure out where to most easily make a dent in my spending.
 
-[-] As a user, I want to filter my spending reports by time period, so that I can know how my spending habits have changed over time.
+[+] As a user, I want to filter my spending reports by time period, so that I can know how my spending habits have changed over time.
 
 [-] As a user, I want to set a monthly budget for each category, so that I can create goals for my spending.
 

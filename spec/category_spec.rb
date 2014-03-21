@@ -17,6 +17,19 @@ describe "Category" do
     end
   end
 
+  describe "remaining_budget" do
+    it "allows a user to see the remaining money left in a budget for that category" do
+      category = Category.new({'type' => 'footwear','budget' => 100})
+      expense1 = Expense.new({'description' => 'something awesome', 'date' => '2014-3-24', 'amount' => 45})
+      expense2 = Expense.new({'description' => 'something even more awesome', 'date' => '2014-3-26', 'amount' => 50})
+      expense1.save
+      expense2.save
+      Category.add_combo(expense1.id)
+      Category.add_combo(expense2.id)
+      category.remaining_budget.should eq 5
+    end
+  end
+
   it 'should save the instance to the database' do
     category = Category.new({'type' => 'footwear'})
     category.save

@@ -2,11 +2,12 @@ require 'pg'
 require 'pry'
 
 class Category
-  attr_reader :type, :id
+  attr_reader :type, :id, :budget
 
   def initialize(category_info)
     @type = category_info['type']
     @id = category_info['id'].to_i
+    @budget = category_info['budget'].to_f
   end
 
   def self.all
@@ -19,12 +20,12 @@ class Category
   end
 
   def save
-    result = DB.exec("INSERT INTO category (type) VALUES ('#{@type}') RETURNING id;")
+    result = DB.exec("INSERT INTO category (type, budget) VALUES ('#{@type}', #{@budget}) RETURNING id;")
     @id = result.first['id'].to_i
   end
 
   def ==(another)
-    self.type == another.type && self.id == another.id
+    self.type == another.type && (self.id == another.id && self.budget == another.budget)
   end
 
   def set_type(new_type)
@@ -53,5 +54,10 @@ class Category
   def percent_spent
    result = self.total_category_expense / Expense.total
    result.round(2) * 100
+  end
+
+  def remaining_budget
+    # WE'RE HERE, THIS ONE ISN'T DONE YET.
+    # results = DB.exec("")
   end
 end
