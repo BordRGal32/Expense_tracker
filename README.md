@@ -1,5 +1,6 @@
 #Expense organizer
-##Create an app for organizing your expenses. Here are some user stories for you - build one at a time before moving to the next one:
+
+Purpose: Completed as part of the Epicodus Curriculum. Working with databases. 
 
 [+] As a user, I want to enter an expense, so I can keep track of where I'm spending my money. I should be able to provide a description [(for example, "Burgers"), an amount ($7.56), and the date I made the purchase.
 
